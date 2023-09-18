@@ -1,0 +1,4 @@
+dearpygui
+keyboard
+hashlib
+streamlink
