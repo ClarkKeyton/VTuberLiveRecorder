@@ -3,15 +3,23 @@ import CheckStreams
 import dearpygui.dearpygui as d
 import keyboard as k_board
 import time
+import ctypes
+
+def SetConsoleTitle(title_name : str):
+    return ctypes.cdll.LoadLibrary("Kernel32.dll").SetConsoleTitleW(title_name)
 class UI_CheckStreams:
     def CheckStream():
         CheckStreams.StreamsCheck.GetCMDCommand(d.get_value("VtuberNickname"))
+    def Download():
+        CheckStreams.StreamsCheck.DownloadStreamLive(d.get_value("VtuberNickname"), d.get_value("FilenameMP4"))
     def Main_UI():
         d.create_context()
 
         with d.window(label="VTuberLiveRecorder", height=755, width=755, tag="VTUBERLIVERECORDER_MAINWINDOW"):
             d.add_input_text(label="Nickname Of VTubers", tag="VtuberNickname")
             d.add_button(label="Check Livestream", callback=UI_CheckStreams.CheckStream)
+            d.add_input_text(label="Filename of Current Stream", tag="FilenameMP4")
+            d.add_button(label="Download Stream", callback=UI_CheckStreams.Download)
         d.create_viewport(title='VTuberLiveRecorder', width=755, height=755)
         d.setup_dearpygui()
         d.show_viewport()
@@ -26,10 +34,13 @@ def Main():
     else:
         print("Please Download VLC 3.0.18 or Check You're Folder Installation")
         exit(44345)
-    UI_CheckStreams.Main_UI()
 if __name__ == "__main__":
+    SetConsoleTitle("VTuberLiveRecorder by ClarkKeyton")
+    Main()
     while True:
         if k_board.is_pressed("X"):
-            Main()
+            UI_CheckStreams.Main_UI()
+        elif k_board.is_pressed('CTRL+Q'):
+            exit(5545)
         time.sleep(0.4)
     exit(545)
