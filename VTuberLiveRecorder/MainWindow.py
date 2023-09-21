@@ -4,6 +4,7 @@ import dearpygui.dearpygui as d
 import keyboard as k_board
 import time
 import ctypes
+import PrintStrHash as printx
 
 def SetConsoleTitle(title_name : str):
     return ctypes.cdll.LoadLibrary("Kernel32.dll").SetConsoleTitleW(title_name)
@@ -16,10 +17,11 @@ class UI_CheckStreams:
         d.create_context()
 
         with d.window(label="VTuberLiveRecorder", height=755, width=755, tag="VTUBERLIVERECORDER_MAINWINDOW"):
-            d.add_input_text(label="Nickname Of VTubers", tag="VtuberNickname")
+            d.add_input_text(label="Nickname Of VTubers", tag="VtuberNickname", enabled=False)
             d.add_button(label="Check Livestream", callback=UI_CheckStreams.CheckStream)
             d.add_input_text(label="Filename of Current Stream", tag="FilenameMP4")
             d.add_button(label="Download Stream", callback=UI_CheckStreams.Download)
+            d.add_text("MD5 Hash Sum of VLC: {}".format(printx.PrintStrHash.PrintStrHashVLC()), color=[215, 55, 75])
         d.create_viewport(title='VTuberLiveRecorder', width=755, height=755)
         d.setup_dearpygui()
         d.show_viewport()
